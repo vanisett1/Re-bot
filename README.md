@@ -1,77 +1,82 @@
-# SlyncOps
 
-# Flask-GitLab-Slack Integration
+```markdown
+# Flask GitLab-Slack Integration
 
-This project is a Flask application designed to create GitLab branches and monitor GitLab CI/CD pipeline progress, with updates sent to a Slack channel. It also allows triggering manual jobs in a GitLab pipeline via Slack commands.
+This Flask application integrates GitLab with Slack, allowing users to create branches, trigger pipelines, and send updates directly from Slack commands.
 
-## Features
+## Getting Started
 
-- Creation of new branches in GitLab from a Slack command.
-- Monitoring the progress of GitLab CI/CD pipelines in Slack.
-- Triggering manual jobs in GitLab pipelines from Slack.
-- Integration with multiple GitLab projects.
-- Sending updates and notifications to a designated Slack channel.
+### Prerequisites
 
-## Requirements
+- Python 3.x
+- GitLab account with access to a repository
+- Slack account with permissions to create apps
+- ngrok (or any other local tunneling solution)
 
-- Python 3.6 or higher
-- Flask
-- GitLab account with API access
-- Slack workspace with a bot token
+### Installation
 
-## Installation
+1. Clone the repository or download the source code to your local machine.
+2. Navigate to the project directory and set up a Python virtual environment:
 
-1. Clone the repository to your local machine.
+   ```sh
+   python3 -m venv venv
+   source venv/bin/activate  # Use `venv\Scripts\activate` on Windows
+   ```
 
-```bash
-git clone https://github.com/your-username/your-repository.git
+3. Install the required dependencies:
+
+   ```sh
+   pip install flask python-gitlab requests
+   ```
+
+### Configuration
+
+1. Replace the placeholder tokens and project IDs in the code with your actual GitLab and Slack credentials.
+2. Start the Flask application locally:
+
+   ```sh
+   python app.py
+   ```
+
+3. Use ngrok to tunnel your local server:
+
+   ```sh
+   ngrok http 5000
+   ```
+
+   Take note of the ngrok forwarding URL.
+
+### Slack Setup
+
+1. Configure a Slack App with Slash Commands and Interactive Components.
+2. Set the request URLs to point to your ngrok URL:
+
+   - Slash Commands: `<ngrok_url>/slack_command_endpoint`
+   - Interactive Components: `<ngrok_url>/slack_button_endpoint`
+
+### GitLab Webhooks (Optional)
+
+1. If needed, configure GitLab Webhooks to point to your ngrok URL with the appropriate endpoints.
+
+### Running Locally
+
+Once everything is set up, test the Flask application's functionality:
+
+1. Use the defined slash commands in Slack to interact with your GitLab repository.
+2. Observe the responses and updates from the Flask application in Slack.
+
+### Debugging
+
+Monitor the Flask application's terminal output for any potential errors or log messages.
+
+### Stopping the Application
+
+To stop the application, use `Ctrl+C` in the terminal and deactivate the Python virtual environment with:
+
+```sh
+deactivate
 ```
 
-2. Navigate to the cloned directory.
+## Security Considerations
 
-```bash
-cd your-repository
-```
-
-3. Install the required Python packages.
-
-```bash
-pip install -r requirements.txt
-```
-
-## Configuration
-
-You must set the following environment variables with your GitLab and Slack credentials:
-
-- `GITLAB_TOKEN`: Your GitLab API token.
-- `SLACK_TOKEN`: Your Slack bot token.
-- `APP_PROJECT_ID`: The ID of your GitLab project for the "App".
-- `KAIJU_PROJECT_ID`: The ID of your GitLab project for "Kaiju".
-- `IZANAKI_PROJECT_ID`: The ID of your GitLab project for "Izanaki".
-- `SLACK_CHANNEL_ID`: The ID of your Slack channel where messages will be sent.
-
-You can set these variables in your environment, or you can directly replace the placeholder strings in the code with your actual credentials (not recommended for security reasons).
-
-## Running the Application
-
-Run the Flask application by executing the following command:
-
-```bash
-flask run --host=0.0.0.0 --port=5000
-```
-
-The application will start on port 5000 and will be accessible from your network.
-
-## Usage
-
-- To create a branch and start pipelines, send a Slack command with the branch name.
-- To check the pipeline status or trigger manual jobs, use the corresponding Slack commands that interact with this Flask application.
-
-## Slack Integration
-
-You must set up Slash Commands and interactive components in your Slack app to interact with this Flask application.
-
-- For Slash Commands, point to the `/slack_command_endpoint` endpoint of your application.
-- For interactive components (like buttons), point to the `/slack_button_endpoint` endpoint.
-
-
+Ensure that the tokens and Webhook URLs are kept secure and not exposed to the public. Follow best practices when dealing with authentication tokens and sensitive data.
